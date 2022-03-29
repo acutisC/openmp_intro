@@ -1,0 +1,81 @@
+IPS = instructions per second
+MIPS = millions instructions per second
+gHz = giga hertz
+
+Formal CPU speed:
+CPU (1.70 gHz) = 1 700 000 000 IPS
+CPUs (1.70 gHz) * 4 = 6 800 000 000 IPS
+
+Real CPU speed:
+BogoMIPS = 3392.12 = 3 392 000 000 IPS -> 4 threads
+Single thread = 3 392 000 000 / 4 IPS = 848 000 000 IPS
+
+Matrix multiplication set of instructions on RISK processor:
+1. LOAD R0, VAR1
+2. LOAD R1, VAR2
+3. LOAD R2, RESULT
+3. PROD R3, R1, R0
+4. ADD R2, R3, R2
+5. STORE R2, RESULT
+
+Note: New processors have MLA (Multiply and accumulate) instruction.
+ 
+Matrix multiplication algorithm complexity -> O(n3) = 3 times for loop on n dimensional matrix
+
+Cache memory:
+L1d 32K = 32 000 bytes
+L1i 32K = 32 000 bytes
+L2 256K = 256 000 bytes
+L3 3072K = 3 072 000 bytes
+Total Cache Memory: TCM = 3 392 000 bytes
+
+Bus speed -> 5 GT/s = 40 GB/s ~ 40 000 000 000 B/s 
+
+Calculation:
+
+1. example -> n = 1000
+
+MEMORY:
+Variables size "unsigned short" require 2 bytes: VAR = 2
+Total memory requirements: REQ = 1000 * 1000 * 2 = 2 000 000 bytes
+REQ / TCM = 2 000 000 / 3 392 000 ~ 0.6 ~ 60 % of total cache memory.
+
+BUS:
+No need for RAM memory transfer. 
+
+TIME:
+a) 5 instructions 
+n3 (iterations) * 5 (instructions) = 1 000 000 000 * 5 = 5 000 000 000
+expected run-time on 4 threads ~ 5 000 000 000 / 3 392 000 000 ~ 2 seconds
+expected run-time on single thread ~ 5 000 000 000 / 848 000 000 ~ 6 seconds
+b) 1 instruction
+
+2. example -> n = 3000
+
+MEMORY:
+Variables size "unsigned short" require 2 bytes: VAR = 2
+Total memory requirements: REQ = 3000 * 3000 * 2 = 18 000 000 bytes
+REQ / TCM = 18 000 000 / 3 392 000 ~ 5
+
+BUS:
+Need to fill out cache 5 times.
+Meaning we need to lose 5 seconds on data transferring from RAM. 
+
+TIME:
+n3 (iterations) * 5 (instructions) = 27 000 000 000 * 5 = 135 000 000 000
+expected run-time ~ 135 000 000 000 / 3 392 000 000 ~ 40 seconds + 5 seconds for memory transfers = 45 seconds
+
+2. example -> n = 5000
+
+MEMORY:
+Variables size "unsigned short" require 2 bytes: VAR = 2
+Total memory requirements: REQ = 5000 * 5000 * 2 = 50 000 000 bytes
+REQ / TCM = 50 000 000 / 3 392 000 ~ 15
+
+BUS:
+Need to fill out cache 15 times.
+Meaning we need to lose 15 seconds on data transferring from RAM. 
+
+TIME:
+n3 (iterations) * 5 (instructions) = 125 000 000 000 * 5 = 625 000 000 000
+expected run-time ~ 625 000 000 000 / 3 392 000 000 ~ 185 seconds + 15 seconds for memory transfers = 200 seconds (3 minutes and 20 seconds)
